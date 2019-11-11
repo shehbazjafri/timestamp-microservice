@@ -24,10 +24,11 @@ app.get("/api/hello", function(req, res) {
 });
 
 app.get("/api/timestamp/:dateString", function(req, res) {
-  if (!req.params.dateString) {
+  const input = req.params.dateString;
+  if (!input) {
     res.json({ unix: new Date() });
   }
-  const date = new Date(req.params.dateString);
+  const date = new Date(input);
 
   res.json({
     unix: date.getTime(),
