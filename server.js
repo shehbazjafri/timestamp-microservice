@@ -37,7 +37,7 @@ app.get("/api/timestamp/:dateString", function(req, res) {
 
   // Check invalid
   var error = { error: "Invalid Date" };
-  var letters = /^[A-Za-z]+$/;
+  var letters = /[a-z]+/gi;
   if (input.match(letters)) {
     res.json(error);
   } else {
