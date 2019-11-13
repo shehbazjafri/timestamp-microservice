@@ -31,11 +31,21 @@ app.get("/api/timestamp/", function(req, res) {
 app.get("/api/timestamp/:dateString", function(req, res) {
   var input = req.params.dateString;
   var date = new Date(input);
+  if (!isNaN(input)) {
+    date = new Date(input * 1000);
+  }
 
-  res.json({
-    unix: date.getTime(),
-    utc: date.toUTCString()
-  });
+  // Check invalid
+  var error = { error: "Invalid Date" };
+  var letters = /^[A-Za-z]+$/;
+  if (input.match(letters)) {
+    res.json(error);
+  } else {
+    res.json({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    });
+  }
 });
 
 // listen for requests :)
