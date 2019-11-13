@@ -23,6 +23,11 @@ app.get("/api/hello", function(req, res) {
   res.json({ greeting: "hello API" });
 });
 
+app.get("/api/timestamp/", function(req, res) {
+  var currentDate = new Date();
+  res.json({ unix: currentDate.getTime(), utc: currentDate.toUTCString() });
+});
+
 app.get("/api/timestamp/:dateString", function(req, res) {
   var input = req.params.dateString;
   var date = new Date(input);
@@ -32,11 +37,6 @@ app.get("/api/timestamp/:dateString", function(req, res) {
     utc: date.toUTCString()
   });
 });
-
-// app.get("/api/timestamp/", function(req, res) {
-//   const date = new Date();
-//   res.json({ unix: date.getTime(), utc: date.toUTCString() });
-// });
 
 // listen for requests :)
 // app.set("port", process.env.PORT || 5000);
