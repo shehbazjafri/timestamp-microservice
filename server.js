@@ -4,7 +4,7 @@
 // init project
 var express = require("express");
 var app = express();
-
+var dateFormat = require("dateformat");
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require("cors");
@@ -31,16 +31,23 @@ app.get("/api/timestamp/", function(req, res) {
 app.get("/api/timestamp/:dateString", function(req, res) {
   var input = req.params.dateString;
   var date = new Date(input);
-  if (!isNaN(input)) {
-    date = new Date(input * 1000);
-  }
 
-  // Check invalid
   var error = { error: "Invalid Date" };
   var letters = /[a-z]+/gi;
-  if (input.match(letters)) {
+  if (!isNaN(input)) {
+    // Unix date
+    var unixNum = Number(input);
+    var date = new Date(unixNum);
+    var utcDate = dateFormat(date, "ddd, d mmm yyyy h:MM:ss Z");
+    res.json({
+      unix: unixNum,
+      utc: utcDate
+    });
+  } else if (input.match(letters)) {
+    //Invalid input
     res.json(error);
   } else {
+    // Valid date
     res.json({
       unix: date.getTime(),
       utc: date.toUTCString()
